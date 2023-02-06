@@ -1,6 +1,13 @@
 import React from "react";
-
-const App = () => {
-  return <div></div>;
+import PaintRoutes from "./router";
+const PaintApp = () => {
+  return (
+    <div>
+      <ul>
+        <li>paint li</li>
+      </ul>
+      <PaintRoutes />
+    </div>
+  );
 };
-export default App;
+export default PaintApp;
