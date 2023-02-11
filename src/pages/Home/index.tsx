@@ -1,9 +1,15 @@
 import react from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <div>
-      <h1>this is a home page</h1>
+      <h1>Apps</h1>
+      <ul>
+        <li>
+          <Link to="/paint">Paint App</Link>
+        </li>
+      </ul>
     </div>
   );
 };

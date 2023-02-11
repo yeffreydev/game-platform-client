@@ -1,12 +1,11 @@
 .login {
-  border: 1px solid red;
-  background-color: #888;
-  width: 90%;
+  border-radius: 5px;
+  width: 100%;
   margin: auto;
 }
 .form_header {
   text-align: center;
-  color: #333;
+  color: #000;
 }
 .form_footer {
   text-align: left;
@@ -23,14 +22,14 @@
 }
 
 .form_group label {
-  color: #defeff;
+  color: #000;
 }
 .form_group input {
   padding: 10px;
   border-radius: 5px;
-  color: #fff;
+  color: #000;
   font-size: 17px;
-  background-color: #222;
+  background-color: #dedede;
 }
 .form_group button {
   width: 60%;
@@ -41,4 +40,23 @@
   font-size: 20px;
   cursor: pointer;
   margin: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .login {
+    width: 80%;
+    border: 1px solid #000;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .login {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .login {
+    width: 50%;
+  }
 }
