@@ -1,18 +1,29 @@
-.login {
-  border-radius: 5px;
+.form {
   width: 100%;
-  margin: auto;
+  border-radius: 5px;
+  margin: 100px auto;
 }
+
+.form a {
+  color: #f8f8f8; /* light gray link color */
+  text-decoration: none; /* remove underline */
+}
+
+.form a:hover {
+  color: #fff; /* white on hover */
+  text-decoration: underline; /* add underline on hover */
+}
+
 .form_header {
   text-align: center;
-  color: #000;
 }
+
 .form_footer {
   text-align: left;
   margin: auto;
   width: 90%;
-  color: #333;
 }
+
 .form_group {
   margin: 20px auto;
   display: flex;
@@ -22,20 +33,37 @@
 }
 
 .form_group label {
-  color: #000;
+  font-size: 15px;
 }
+
 .form_group input {
   padding: 10px;
-  border-radius: 5px;
-  color: #000;
   font-size: 17px;
-  background-color: #dedede;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  color: #fff;
+}
+
+.form_group:has(input[type="checkbox"]) {
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.terms {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 .form_group button {
   width: 60%;
-  background-color: #000;
+  background: linear-gradient(45deg, #000 0%, #353535 100%);
   color: #fff;
   padding: 10px 0;
+  border: none;
   border-radius: 10px;
   font-size: 20px;
   cursor: pointer;
@@ -43,19 +71,19 @@
 }
 
 @media screen and (min-width: 768px) {
-  .login {
+  .form {
     width: 80%;
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .login {
+  .form {
     width: 60%;
   }
 }
 
 @media screen and (min-width: 1280px) {
-  .login {
+  .form {
     width: 50%;
   }
 }

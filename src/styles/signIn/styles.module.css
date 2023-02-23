@@ -1,6 +1,5 @@
 .signIn {
-  width: 100vw;
-  display: flex;
   overflow: auto;
-  height: 100vh;
+  display: flex;
+  flex: 1;
 }

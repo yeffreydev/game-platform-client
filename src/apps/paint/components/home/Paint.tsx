@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import PaintContext from "./../../context/AppContext";
-// import styles from "./../../styles/home/Paint.module.css";
 import styles from "./../../styles/home/Paint.module.css";
+
 interface PaintProps {
   width: number;
   height: number;
@@ -10,10 +10,12 @@ interface PaintProps {
 const Paint: React.FC<PaintProps> = ({ width, height }) => {
   const [color, setColor] = useState("black");
   const [painting, setPainting] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const { paintSocket } = useContext(PaintContext);
 
-  const startPainting = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [pngFile, setPngFile] = useState<File | null>(null);
+  const { paintSocket } = useContext(PaintContext);
+  //function for start painting in canvas
+  function startPainting(event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) {
     setPainting(true);
     const canvas = event.target as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();
@@ -27,7 +29,7 @@ const Paint: React.FC<PaintProps> = ({ width, height }) => {
       y = (event as React.TouchEvent<HTMLCanvasElement>).touches[0].clientY - rect.top;
     }
     setMousePosition({ x, y });
-  };
+  }
 
   const stopPainting = () => {
     setPainting(false);
@@ -62,9 +64,23 @@ const Paint: React.FC<PaintProps> = ({ width, height }) => {
     paintSocket?.emit("draw", { x, y, color, mousePosition });
   };
 
-  const handleColorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setColor(event.target.value);
+  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setColor(e.target.value);
   };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const context = canvas?.getContext("2d");
+    if (!context) {
+      return;
+    }
+    context.fillStyle = "#fff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    //eslint-disable-next-line
+  }, []);
 
   let canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -86,6 +102,40 @@ const Paint: React.FC<PaintProps> = ({ width, height }) => {
     });
   }, [paintSocket]);
 
+  const downloadImg = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const dataUrl = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.download = "image.png";
+    link.href = dataUrl;
+    link.click();
+  };
+
+  const loadImg = () => {
+    //load img in canvas with pngFile
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    const context = canvas.getContext("2d");
+    if (!context) {
+      return;
+    }
+    const img = new Image();
+    img.src = URL.createObjectURL(pngFile!);
+    img.onload = () => {
+      context.drawImage(img, 0, 0);
+    };
+  };
+
+  const handleChangePngFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    setPngFile(file);
+  };
+
   return (
     <div>
       <canvas
@@ -100,13 +150,25 @@ const Paint: React.FC<PaintProps> = ({ width, height }) => {
         width={width}
         height={height}
       />
-      <select onChange={handleColorChange}>
-        <option value="black">Black</option>
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
-        <option value="yellow">Yellow</option>
-        <option value="green">Green</option>
-      </select>
+      <button
+        onClick={() => {
+          downloadImg();
+        }}
+      >
+        Download
+      </button>
+      <div className="upload img">
+        <input onChange={handleChangePngFile} type="file" accept="png" name="img" id="img" />
+        <button onClick={loadImg}>load img</button>
+      </div>
+      <div>
+        <label htmlFor="">select color</label>
+        <input onChange={handleColorChange} type="color" name="color" id="color" />
+      </div>
+      <div>
+        <button>save file</button>
+      </div>
+      <div>creat new file</div>
     </div>
   );
 };

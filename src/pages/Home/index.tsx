@@ -1,17 +1,7 @@
-import react from "react";
-import { Link } from "react-router-dom";
+import Landing from "../../components/home/Landing";
 
 const Home = () => {
-  return (
-    <div>
-      <h1>Apps</h1>
-      <ul>
-        <li>
-          <Link to="/paint">Paint App</Link>
-        </li>
-      </ul>
-    </div>
-  );
+  return <Landing />;
 };
 
 export default Home;

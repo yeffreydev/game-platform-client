@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { registerUser } from "../../api/auth";
+import { addUserAuth } from "../../context/appActions";
+import AppContext from "../../context/AppContext";
+import { saveUserTokenInLocalStorage } from "../../utils/auth";
 import loginStyles from "./../../styles/signIn/Login.module.css";
 import { ILoginForm } from "./Login";
 
@@ -16,21 +19,31 @@ const initialState: IRegisterForm = {
 
 const Register = () => {
   const [registerForm, setRegisterForm] = React.useState<IRegisterForm>(initialState);
+  const { userAuth, dispatch } = useContext(AppContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRegisterForm({ ...registerForm, [name]: value });
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { status, data } = await registerUser(registerForm);
-    if (status === 200) {
-      //setUser({token: data.token, auth: true})
+    if (status !== 200) {
+      return alert("email or username already exists");
     }
+    saveUserTokenInLocalStorage(data.user);
+    addUserAuth(data.user, dispatch);
   };
 
+  useEffect(() => {
+    if (userAuth.auth) {
+      window.location.href = "/";
+    }
+  }, [userAuth]);
+
   return (
-    <form className={loginStyles.login} onSubmit={handleSubmit}>
+    <form className={loginStyles.form} onSubmit={handleSubmit}>
       <div className={loginStyles.form_header}>
         <h2> create an account</h2>
         <p>more time with your friends.</p>
@@ -47,6 +60,10 @@ const Register = () => {
         <label htmlFor="">password</label>
         <input placeholder="password" name="password" type="text" onChange={handleChange} autoComplete={"off"} />
       </div>
+      <div className={`${loginStyles.form_group} ${loginStyles.terms}`}>
+        <input type={"checkbox"} />
+        <label htmlFor="">terms of service and privacy policy</label>
+      </div>
       <div className={loginStyles.form_group}>
         <button type="submit">Register</button>
       </div>
@@ -56,11 +73,6 @@ const Register = () => {
           <b>
             <Link to="/login">Login</Link>
           </b>
-        </p>
-        <p>
-          {" "}
-          <input type={"checkbox"} />
-          terms of service and privacy policy
         </p>
       </div>
     </form>

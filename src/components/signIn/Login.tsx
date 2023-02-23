@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { loginUser } from "../../api/auth";
+import { addUserAuth } from "../../context/appActions";
+import AppContext from "../../context/AppContext";
+import { saveUserTokenInLocalStorage } from "../../utils/auth";
 import styles from "./../../styles/signIn/Login.module.css";
 
 export interface ILoginForm {
@@ -15,19 +18,31 @@ const initialState: ILoginForm = {
 
 const Login = () => {
   const [loginForm, setLoginForm] = React.useState<ILoginForm>(initialState);
+  const { userAuth, dispatch } = useContext(AppContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { status, data } = await loginUser(loginForm);
-    console.log({ status, data });
+    if (status !== 200) {
+      return alert("Invalid username or password");
+    }
+    saveUserTokenInLocalStorage(data.user);
+    addUserAuth(data.user, dispatch);
   };
 
+  useEffect(() => {
+    if (userAuth.auth) {
+      window.location.href = "/";
+    }
+  }, [userAuth]);
+
   return (
-    <form className={styles.login} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.form_header}>
         <h2>Welcome back</h2>
         <p>you and me.</p>
