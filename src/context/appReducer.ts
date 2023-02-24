@@ -1,7 +1,7 @@
 import { IUserAuth } from "../types/user";
 import { IAppState, IAction, ActionTypes } from "./types";
 
-const AppReducer = (state: IAppState, action: IAction<number | IUserAuth>): IAppState => {
+const AppReducer = (state: IAppState, action: IAction<number | IUserAuth | string>): IAppState => {
   switch (action.type) {
     case ActionTypes.ADD: {
       return {
@@ -19,6 +19,17 @@ const AppReducer = (state: IAppState, action: IAction<number | IUserAuth>): IApp
       return {
         ...state,
         userAuth: { token: "", auth: false },
+      };
+    }
+    case ActionTypes.HANDLE_CONDITIONAL_VIEW: {
+      return {
+        ...state,
+        conditionalViews: {
+          ...state.conditionalViews,
+          [action.payload as string]: {
+            isOn: !state.conditionalViews[action.payload as string].isOn,
+          },
+        },
       };
     }
     default:

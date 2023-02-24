@@ -1,12 +1,16 @@
 import { useContext } from "react";
 import AppContext from "../../context/AppContext";
-import { HeaderDiv, HeaderNav, HeaderNavUl, HeaderNavLi, HeaderLink } from "../styled/header";
+import { HeaderDiv, HeaderNav, HeaderNavUl, HeaderNavLi, HeaderLink, AppsButton } from "../styled/header";
 import Logo from "./Logo";
+import { GrApps } from "react-icons/gr";
+import AppsModal from "./AppsModal";
+import { handleConditionalView } from "../../context/appActions";
 
 export default function Header() {
-  const { userAuth } = useContext(AppContext);
+  const { userAuth, dispatch } = useContext(AppContext);
   return (
     <HeaderDiv>
+      <AppsModal />
       <HeaderLink to="/">
         <Logo />
       </HeaderLink>
@@ -19,7 +23,19 @@ export default function Header() {
       </HeaderNav> */}
       <HeaderNav>
         <HeaderNavUl>
-          <HeaderNavLi>{userAuth.auth ? <button>Apps</button> : <HeaderLink to="/login">Login</HeaderLink>}</HeaderNavLi>
+          <HeaderNavLi>
+            {userAuth.auth ? (
+              <AppsButton
+                onClick={() => {
+                  handleConditionalView("AppsModal", dispatch);
+                }}
+              >
+                <GrApps color="#fff" />
+              </AppsButton>
+            ) : (
+              <HeaderLink to="/login">Login</HeaderLink>
+            )}
+          </HeaderNavLi>
           {userAuth.auth && (
             <HeaderNavLi>
               <HeaderLink to="/account">Account</HeaderLink>
