@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import { IUserAuth } from "../types/user";
-import { IAction, ActionTypes, IconditionalView, IConditionalViews } from "./types";
+import { IAction, ActionTypes } from "./types";
 
 export const addCount = (dispatch: Dispatch<IAction<number>>) => {
   dispatch({ type: ActionTypes.ADD });

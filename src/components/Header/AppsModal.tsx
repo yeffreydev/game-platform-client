@@ -1,6 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import AppContext from "../../context/AppContext";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   position: fixed;
@@ -11,13 +12,14 @@ const Container = styled.div`
   min-height: 50px;
   background: #000;
 `;
+const AppLink = styled(Link)``;
 export default function AppsModal() {
   const { conditionalViews } = useContext(AppContext);
   return (
     <>
       {conditionalViews["AppsModal"].isOn && (
         <Container>
-          <span>hola</span>
+          <AppLink to="/paint">Paint</AppLink>
         </Container>
       )}
     </>
