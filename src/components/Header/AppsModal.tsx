@@ -1,26 +1,18 @@
 import { useContext } from "react";
-import styled from "styled-components";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
 
-const Container = styled.div`
-  position: fixed;
-  top: 50px;
-  display: flex;
-  right: 10px;
-  min-width: 200px;
-  min-height: 50px;
-  background: #000;
-`;
-const AppLink = styled(Link)``;
+const AppLink = (p: {name: string, link: string}) => <Link className={`bg-gray-700 rounded-lg p-1`} to={p.link}>{p.name}</Link>
+
 export default function AppsModal() {
   const { conditionalViews } = useContext(AppContext);
   return (
     <>
       {conditionalViews["AppsModal"].isOn && (
-        <Container>
-          <AppLink to="/paint">Paint</AppLink>
-        </Container>
+        <div className="fixed flex gap-3 items-start justify-start top-[50px] right-[10px] rounded-md w-[200px] h-[50px] bg-black p-1">
+        <AppLink name="paint" link="/paint" />
+        <AppLink name='home' link='/' />
+        </div>
       )}
     </>
   );

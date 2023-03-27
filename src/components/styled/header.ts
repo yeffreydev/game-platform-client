@@ -31,10 +31,6 @@ export const HeaderLink = styled(Link)`
 export const AppsButton = button`
     height: 40px;
     width: 40px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    background: #000;
     font-size: 25px;
     display: grid;
     place-items: center;

@@ -6,4 +6,8 @@ const initialState: paintTypes.IAppState = {
   paintSocket: null,
 };
 
+const holaMundo = () => {
+
+}
+
 export default initialState;
