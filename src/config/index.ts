@@ -1,4 +1,4 @@
 const config = {
-  host: "http://localhost:4000",
+  host: "http://192.168.0.102:4000",
 };
 export default config;
